@@ -1,0 +1,41 @@
+group 'rk'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "me.champeau.gradle:jmh-gradle-plugin:0.3.1"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: "me.champeau.gradle.jmh"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+jmh {
+    fork = 2
+    iterations = 5
+    warmup = '1s'
+    warmupIterations = 5
+    duplicateClassesStrategy = 'warn'
+}
+jmhJar.doFirst {
+
+    new File("build/resources/test").mkdirs()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    jmh 'org.openjdk.jmh:jmh-core:1.17'
+    jmh 'org.openjdk.jmh:jmh-generator-annprocess:1.17'
+}
