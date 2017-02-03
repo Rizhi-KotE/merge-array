@@ -2,6 +2,7 @@ package merger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Main {
 
@@ -48,6 +49,11 @@ public class Main {
             pos--;
             bPos--;
         }
+    }
+
+    public void justSort(ArrayList<Integer> a, ArrayList<Integer> b) {
+        a.addAll(b);
+        Collections.sort(a);
     }
 
     public void Valicname1() throws Exception {

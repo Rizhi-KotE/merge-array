@@ -17,8 +17,10 @@ public class MyBenchmark {
     private ArrayList<Integer> a;
 
 
-    private long aLimit = 1000;
-    private long bLimit = 1000;
+    @Param(value = {"10", "100", "1000"})
+    private long aLimit;
+    @Param(value = {"10", "100", "1000"})
+    private long bLimit;
 
     @Setup
     public void onStart() {
@@ -43,6 +45,13 @@ public class MyBenchmark {
 
     @Benchmark
     public List<Integer> my() {
+        ArrayList<Integer> a = new ArrayList<>(this.a);
+        Main.merge(a, b);
+        return a;
+    }
+
+    @Benchmark
+    public List<Integer> justSort() {
         ArrayList<Integer> a = new ArrayList<>(this.a);
         Main.merge(a, b);
         return a;
