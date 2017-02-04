@@ -1,8 +1,6 @@
 package merger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class Main {
 
@@ -51,20 +49,34 @@ public class Main {
         }
     }
 
-    public void justSort(ArrayList<Integer> a, ArrayList<Integer> b) {
-        a.addAll(b);
-        Collections.sort(a);
+    public static void justSort(List<Integer> a, List<Integer> b) {
+        ArrayList<Object> objects = new ArrayList<>(a.size() + b.size());
+        objects.addAll(a);
+        objects.addAll(b);
     }
 
-    public void Valicname1() throws Exception {
-        ArrayList<Integer> a = new ArrayList<>(Arrays.asList(1, 2, 3, 7, 8, 9));
-        ArrayList b = new ArrayList(Arrays.asList(1, 3, 5));
-        Main.ValicMerge(a, b);
-    }
-
-    public void name1() throws Exception {
-        ArrayList<Integer> a = new ArrayList<>(Arrays.asList(1, 2, 3, 7, 8, 9));
-        ArrayList b = new ArrayList(Arrays.asList(1, 3, 5));
-        Main.ValicMerge(a, b);
+    public static void merge(LinkedList<Integer> a, LinkedList<Integer> b) {
+        if (a.isEmpty()) {
+            a.addAll(b);
+            return;
+        }
+        if (b.isEmpty()) return;
+        ListIterator<Integer> aIterator = a.listIterator(), bIterator = b.listIterator();
+        Integer bElem = bIterator.next();
+        while (aIterator.hasNext()) {
+            Integer rightElement = aIterator.next();
+            aIterator.previous();
+            while (bElem < rightElement) {
+                aIterator.add(bElem);
+                if (bIterator.hasNext())
+                    bElem = bIterator.next();
+                else return;
+            }
+            aIterator.next();
+        }
+        a.addLast(bElem);
+        while (bIterator.hasNext()) {
+            a.addLast(bIterator.next());
+        }
     }
 }
