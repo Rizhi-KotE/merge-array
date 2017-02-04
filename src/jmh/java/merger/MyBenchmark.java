@@ -2,9 +2,7 @@ package merger;
 
 import org.openjdk.jmh.annotations.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -19,8 +17,6 @@ public class MyBenchmark {
 
     @Param(value = {"10", "100", "1000"})
     private long aLimit;
-    @Param(value = {"10", "100", "1000"})
-    private long bLimit;
 
     @Setup
     public void onStart() {
@@ -30,30 +26,28 @@ public class MyBenchmark {
                 .sorted()
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         b = Stream.generate(random::nextInt)
-                .limit(bLimit)
+                .limit(aLimit)
                 .sorted()
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
 
     @Benchmark
-    public List<Integer> valik() {
-        ArrayList<Integer> a = new ArrayList<>(this.a);
-        Main.ValicMerge(a, b);
-        return a;
+    public List justSort() {
+        ArrayList<Integer> integers = new ArrayList<>(a);
+        integers.addAll(b);
+        Collections.sort(integers);
+        return integers;
     }
 
     @Benchmark
-    public List<Integer> my() {
-        ArrayList<Integer> a = new ArrayList<>(this.a);
-        Main.merge(a, b);
-        return a;
-    }
-
-    @Benchmark
-    public List<Integer> justSort() {
-        ArrayList<Integer> a = new ArrayList<>(this.a);
-        Main.merge(a, b);
-        return a;
+    public List treeSort() {
+        ArrayList<Integer> integers = new ArrayList<>(a);
+        TreeSet<Integer> objects = new TreeSet<>();
+        objects.addAll(a);
+        objects.addAll(b);
+        integers.removeIf(x -> true);
+        integers.addAll(objects);
+        return integers;
     }
 }
